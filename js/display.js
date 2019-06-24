@@ -19,11 +19,13 @@ const Display = function(canvas,width,height) {
 
     };  
     
-    this.drawMap = function(map,columns,tile_size) {
+    this.drawMap = function(map,tile_size) {
 
-		for (let i = 0; i < map.length; i++) {
-			if (map[i] == 1) {
-				this.drawRectangle((i % columns)*columns,Math.floor(i / columns)*columns,tile_size,tile_size,"white")
+		for (let y = 0; y < map.length; y++) {
+			for (let x = 0; x < map.length; x++) {
+				if (map[y][x] == 1) {
+					this.drawRectangle(x*tile_size,y*tile_size,tile_size,tile_size,"white")
+				}
 			}
 		}
     

@@ -5,9 +5,10 @@ window.addEventListener("load", function() {
 	const controller = new Controller();
 
 	const render = function() {
-		display.fill("rgba(0,0,0,0.9)");
-		display.drawMap(game.world.map,16,game.world.tile_size)
+		display.fill("rgba(0,0,0,0.99)");
+		display.drawMap(game.world.map,game.world.tile_size)
 		display.drawRectangle(game.world.player.x,game.world.player.y,game.world.player.width,game.world.player.height,game.world.player.color)
+		display.drawRectangle(game.world.player.x + game.world.player.velocity_x,game.world.player.y + game.world.player.velocity_y,game.world.player.width,game.world.player.height,"rgba(140,140,140,0.5)")
 		display.render();
 	}
 
