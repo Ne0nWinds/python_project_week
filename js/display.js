@@ -1,11 +1,9 @@
 const Display = function(canvas,width,height) {
 
     this.context = canvas.getContext("2d");
-    this.context.canvas.width = width;
-    this.context.canvas.height = height;
     this.buffer = document.createElement("canvas").getContext("2d");
-    this.buffer.canvas.width = width;
-    this.buffer.canvas.height = height;
+    this.buffer.canvas.width = this.context.canvas.width = width;
+    this.buffer.canvas.height = this.context.canvas.height = height;
 
     this.fill = function(color) {
 
@@ -21,7 +19,13 @@ const Display = function(canvas,width,height) {
 
     };  
     
-    this.drawMap = function(map,columns) {
+    this.drawMap = function(map,columns,tile_size) {
+
+		for (let i = 0; i < map.length; i++) {
+			if (map[i] == 1) {
+				this.drawRectangle((i % columns)*columns,Math.floor(i / columns)*columns,tile_size,tile_size,"white")
+			}
+		}
     
     }   
 
