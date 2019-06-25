@@ -33,12 +33,12 @@ Game.World = function(friction_x=0.65, friction_y=0.85, gravity=1) {
 				[1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1],
 				[1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1],
 				[1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1],
+				[1,0,0,0,0,0,0,0,0,0,2,2,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1],
+				[1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1],
+				[1,0,1,1,0,0,0,0,0,2,2,2,2,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1],
 				[1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1],
 				[1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1],
-				[1,0,1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1],
-				[1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1],
-				[1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1],
-				[1,0,0,1,1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1],
+				[1,0,0,1,1,1,0,0,2,2,2,2,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1],
 				[1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1],
 				[1,0,0,0,1,1,1,1,1,1,1,1,1,1,1,1,0,0,0,0,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1],
 				[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
@@ -69,33 +69,36 @@ Game.World = function(friction_x=0.65, friction_y=0.85, gravity=1) {
 					console.log("you fell");
 					object.y = (new_y - 9) * this.tile_size;
 				}
+
 				if (this.map[new_y][current_x] == 1) { // Vertical Collision
-					
 					if (object.velocity_y > 0) { //DOWN
-						object.y = new_y * this.tile_size - object.height - 0.1
+						object.y = new_y * this.tile_size - object.height - 0.1;
 						object.jumping = false;
-					} else if (object.velocity_y < 0) { //UP
-						object.y = new_y * this.tile_size + this.tile_size + 0.1	
+					} else if (object.velocity_y) { //UP
+						object.y = new_y * this.tile_size + this.tile_size + 0.1;
 					}
-
 					object.velocity_y = 0;
-
 				}
 				
 				if (this.map[current_y][new_x] == 1) { // Horizontal Collision
 					if (object.velocity_x > 0) { //RIGHT
-						object.x = new_x * this.tile_size - object.width - 0.1
+						object.x = new_x * this.tile_size - object.width - 0.1;
 					} else if (object.velocity_x < 0) { //LEFT
-						object.x = new_x * this.tile_size + this.tile_size + 0.1
+						object.x = new_x * this.tile_size + this.tile_size + 0.1;
 					}
 					object.velocity_x = 0;
 				}
 
+				if (this.map[new_y][current_x] == 2 && y != 0) {
+					if (object.velocity_y > 0) {
+						object.y = new_y * this.tile_size - object.height - 0.1;
+						object.jumping = false;
+						object.velocity_y = 0;
+					}
+				}
 			}
 		}
-		
     }
-
 }
 
 Game.World.prototype = {
