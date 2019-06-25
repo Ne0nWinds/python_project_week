@@ -8,8 +8,9 @@ const Game = function() {
 
 }
 
-Game.World = function(friction=0.85,gravity=1) {
-    this.friction = friction;
+Game.World = function(friction_x=0.65, friction_y=0.85, gravity=1) {
+    this.friction_x = friction_x;
+    this.friction_y = friction_y;
     this.gravity = gravity;
 
     this.player = new Game.Player();
@@ -24,11 +25,11 @@ Game.World = function(friction=0.85,gravity=1) {
                [1,0,0,0,1,0,0,0,0,0,0,0,0,0,0,1],
                [1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1],
                [1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1],
-               [1,0,0,0,0,0,0,0,0,1,0,0,0,0,0,1],
-               [1,0,0,0,0,0,0,0,1,0,1,0,0,0,0,1],
-               [1,0,0,0,0,0,0,1,0,1,0,1,0,0,0,1],
-               [1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1],
-               [1,0,0,1,0,0,0,0,0,0,0,0,0,0,0,1],
+               [1,0,0,0,0,0,0,0,0,0,0,1,1,0,0,1],
+               [1,0,0,0,0,0,0,1,0,0,0,1,1,0,0,1],
+               [1,0,0,0,0,0,0,1,0,0,0,0,0,0,0,1],
+               [1,0,0,0,0,0,0,1,0,0,0,0,0,0,0,1],
+               [1,0,0,1,0,0,0,1,1,1,1,0,0,0,0,1],
                [1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1],
 			   [1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1]];
     this.height = this.tile_size * this.map[0].length;
@@ -39,8 +40,8 @@ Game.World = function(friction=0.85,gravity=1) {
 		this.collideObject(this.player);
         this.player.update();
 
-        this.player.velocity_y *= this.friction;
-        this.player.velocity_x *= this.friction;
+        this.player.velocity_y *= this.friction_y;
+        this.player.velocity_x *= this.friction_x;
 
     }
 
@@ -114,13 +115,19 @@ Game.Player = function(x,y) {
 	this.getLeft = function() { return this.x } 
 	this.getRight = function() { return this.x + this.width } 
 
-    this.moveLeft = function() { this.velocity_x -= 0.75; },
-    this.moveRight = function() { this.velocity_x += 0.75; },
+    this.moveLeft = function() { this.velocity_x -= 1; },
+    this.moveRight = function() { this.velocity_x += 1; },
 
     this.update = function() {
 		
+		if(this.velocity_y == 0) {
+			console.log("On the ground, increase");
+		} else {
+			console.log("In the air, decrease");
+		}
         this.x += this.velocity_x;
         this.y += this.velocity_y;
+		
     }
 
 }
