@@ -23,20 +23,18 @@ window.addEventListener("load", function() {
 	let switched = false;
 	const update = function() {
 
-		if (controller.rightMouseDown) {
-			if (!switched) {
-				tileType = (tileType + 1) % 3
-				console.log(tileType)
-				switched = true;
-			}
-		} else {
-			switched = false;
-		}
 
 		if (controller.mouseDown) {
+			tileType = controller.number
 			tileX = Math.floor(locationOnBuffer.x / game.world.tile_size)
 			tileY = Math.floor(locationOnBuffer.y / game.world.tile_size)
 			game.world.map[tileY][tileX] = tileType;
+		}
+
+		if (controller.rightMouseDown) {
+			tileX = Math.floor(locationOnBuffer.x / game.world.tile_size)
+            tileY = Math.floor(locationOnBuffer.y / game.world.tile_size)
+			game.world.map[tileY][tileX] = 0;
 		}
 
 		if (controller.right) {
