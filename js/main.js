@@ -11,17 +11,21 @@ window.addEventListener("load", function() {
 		display.render();
 	}
 
+	let locationOnBuffer;
 	const paint = function(event) {
 		
 		controller.updateClick(event)
-		let locationOnBuffer = display.findClickLocation(event)
-		tileX = Math.floor(locationOnBuffer.x / game.world.tile_size)
-		tileY = Math.floor(locationOnBuffer.y / game.world.tile_size)
-		game.world.map[tileY][tileX] = 1
+		locationOnBuffer = display.findClickLocation(event)
 
 	}
 
 	const update = function() {
+
+		if (controller.mousedown) {
+			tileX = Math.floor(locationOnBuffer.x / game.world.tile_size)
+			tileY = Math.floor(locationOnBuffer.y / game.world.tile_size)
+			game.world.map[tileY][tileX] = 1
+		}
 
 		if (controller.right) {
 			game.world.player.moveRight()
@@ -51,6 +55,7 @@ window.addEventListener("load", function() {
 	window.addEventListener("keyup", controller.updateKeys)
 	window.addEventListener("resize", resize)
 	document.querySelector("#canvas").addEventListener("mousedown", paint)
+	document.querySelector("#canvas").addEventListener("mousemove", paint)
 	document.querySelector("#canvas").addEventListener("mouseup", paint)
 
 })

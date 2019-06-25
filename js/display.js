@@ -34,7 +34,8 @@ const Display = function(canvas,width,height) {
     }   
 
 	this.findClickLocation = (event) => {
-		if (event.type == "mousedown") {
+		console.log(event.type)
+		if (event.type == "mousedown" || event.type == "mousemove") {
 
 			return {
 				'x':event.offsetX * this.ratioX,

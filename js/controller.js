@@ -24,7 +24,7 @@ const Controller = function() {
 	this.updateClick = (event) => {
 		if (event.type == "mousedown") {
 			this.mousedown = true
-		} else {
+		} else if (event.type == "mouseup") {
 			this.mousedown = false;
 		}
 	}
