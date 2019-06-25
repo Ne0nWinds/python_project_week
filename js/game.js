@@ -22,18 +22,16 @@ Game.World = function(friction_x=0.65, friction_y=0.85, gravity=1) {
                [1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1],
                [1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1],
                [1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1],
-               [1,0,0,0,1,0,0,0,0,0,0,0,0,0,0,1],
                [1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1],
-               [1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1],
-               [1,0,0,0,0,0,0,0,0,0,0,1,1,0,0,1],
-               [1,0,0,0,0,0,0,1,0,0,0,1,1,0,0,1],
-               [1,0,0,0,0,0,0,1,0,0,0,0,0,0,0,1],
-               [1,0,0,0,0,0,0,1,0,0,0,0,0,0,0,1],
-               [1,0,0,1,0,0,0,1,1,1,1,0,0,0,0,1],
+               [1,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1],
+               [1,0,0,0,0,0,0,0,0,0,0,0,1,1,1,1],
+               [1,0,0,0,0,0,0,0,0,0,1,1,1,0,0,1],
+               [1,0,0,0,0,0,0,1,1,1,1,0,0,0,0,1],
+               [1,0,0,0,1,1,1,1,0,0,0,0,0,0,0,1],
                [1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1],
 			   [1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1]];
-    this.height = this.tile_size * this.map[0].length;
-    this.width = this.tile_size * this.map.length;
+    this.width = this.tile_size * this.map[0].length;
+    this.height = this.tile_size * this.map.length;
 
     this.update = function() {
         this.player.velocity_y += this.gravity;
@@ -75,7 +73,7 @@ Game.World = function(friction_x=0.65, friction_y=0.85, gravity=1) {
 					}
 					object.velocity_x = 0;
 				}
-					
+
 			}
 		}
 		
@@ -96,15 +94,15 @@ Game.Player = function(x,y) {
     this.velocity_y = 0;
     this.width = 15.8;
     this.height = 15.8;
-    this.x = 100;
-    this.y = 50;
+    this.x = 16;
+    this.y = 40;
 
     this.jump = function() {
 
         if (!this.jumping && this.velocity_y == 0) {
 
             this.jumping = true;
-            this.velocity_y -= 20;
+            this.velocity_y -= 17.5; // Jump height
 
         }
 
@@ -115,16 +113,18 @@ Game.Player = function(x,y) {
 	this.getLeft = function() { return this.x } 
 	this.getRight = function() { return this.x + this.width } 
 
-    this.moveLeft = function() { this.velocity_x -= 1; },
-    this.moveRight = function() { this.velocity_x += 1; },
+	// Horizontal Speed
+    this.moveLeft = function() { this.velocity_x -= 1.2; },
+    this.moveRight = function() { this.velocity_x += 1.2; },
 
     this.update = function() {
 		
 		if(this.velocity_y == 0) {
-
-			console.log("On the ground, increase");
+			this.friction_x = 0.65;
+			// On the ground, increase the grip
 		} else {
-			console.log("In the air, decrease");
+			this.friction_x = 0.85;
+			// In the air, decrease the resistance
 		}
         this.x += this.velocity_x;
         this.y += this.velocity_y;
