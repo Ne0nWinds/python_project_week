@@ -21,14 +21,14 @@ Game.World = function(friction=0.85,gravity=1) {
                [1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1],
                [1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1],
                [1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1],
-               [1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1],
+               [1,0,0,0,1,0,0,0,0,0,0,0,0,0,0,1],
                [1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1],
                [1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1],
                [1,0,0,0,0,0,0,0,0,1,0,0,0,0,0,1],
                [1,0,0,0,0,0,0,0,1,0,1,0,0,0,0,1],
                [1,0,0,0,0,0,0,1,0,1,0,1,0,0,0,1],
                [1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1],
-               [1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1],
+               [1,0,0,1,0,0,0,0,0,0,0,0,0,0,0,1],
                [1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1],
 			   [1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1]];
     this.height = this.tile_size * this.map[0].length;
@@ -53,24 +53,24 @@ Game.World = function(friction=0.85,gravity=1) {
 				new_x = Math.floor(((object.x + x * object.width) + object.velocity_x) / this.tile_size)
 				new_y = Math.floor(((object.y + y * object.height) + object.velocity_y) / this.tile_size)
 
-				if (this.map[new_y][current_x] == 1) {
+				if (this.map[new_y][current_x] == 1) { //Vertical Collision
 
 					
 					if (object.velocity_y > 0) {
 						object.y = new_y * this.tile_size - object.height - 0.1
 						object.jumping = false;
-					} else {
-						object.y = new_y * this.tile_size + object.height + 0.1	
+					} else if (object.velocity_y < 0) {
+						object.y = new_y * this.tile_size + this.tile_size + 0.1	
 					}
 
 					object.velocity_y = 0;
 
 				}
 				if (this.map[current_y][new_x] == 1) {
-					if (object.velocity_x > 0) {
+					if (object.velocity_x > 0) { //RIGHT
 						object.x = new_x * this.tile_size - object.width - 0.1
-					} else {
-						object.x = new_x * this.tile_size + object.width + 0.1
+					} else { //LEFT
+						object.x = new_x * this.tile_size + this.tile_size + 0.1
 					}
 					object.velocity_x = 0;
 				}
@@ -93,14 +93,14 @@ Game.Player = function(x,y) {
     this.jumping = true;
     this.velocity_x = 0;
     this.velocity_y = 0;
-    this.width = 16;
-    this.height = 16;
+    this.width = 15.8;
+    this.height = 15.8;
     this.x = 100;
     this.y = 50;
 
     this.jump = function() {
 
-        if (!this.jumping) {
+        if (!this.jumping && this.velocity_y == 0) {
 
             this.jumping = true;
             this.velocity_y -= 20;
