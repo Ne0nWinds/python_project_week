@@ -22,6 +22,7 @@ window.addEventListener("load", function() {
 		if (controller.up) {
 			game.world.player.jump()
 		}
+
 		game.update()
 
 	}
@@ -39,5 +40,6 @@ window.addEventListener("load", function() {
 	window.addEventListener("keydown", controller.updateKeys)
 	window.addEventListener("keyup", controller.updateKeys)
 	window.addEventListener("resize", resize)
+	document.querySelector("#canvas").addEventListener("mousedown", display.findClickLocation)
 
 })

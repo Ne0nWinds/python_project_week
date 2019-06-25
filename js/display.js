@@ -4,6 +4,9 @@ const Display = function(canvas,width,height) {
     this.buffer = document.createElement("canvas").getContext("2d");
     this.buffer.canvas.width = this.context.canvas.width = width;
     this.buffer.canvas.height = this.context.canvas.height = height;
+	this.ratioX = 1
+	this.ratioY = 1
+	this.lastGridClick = {}
 
     this.fill = function(color) {
 
@@ -31,6 +34,15 @@ const Display = function(canvas,width,height) {
     
     }   
 
+	this.findClickLocation = (event) => {
+
+		this.lastGridClick = {
+			"x":(event.offsetX * this.ratioX),
+			"y":(event.offsetY * this.ratioY),
+		}
+
+	}
+
     this.render = function() {
         this.context.drawImage(this.buffer.canvas, 0, 0, this.buffer.canvas.width, this.buffer.canvas.height, 0, 0, this.context.canvas.width, this.context.canvas.height);
     };
@@ -45,6 +57,8 @@ const Display = function(canvas,width,height) {
         }
 
         this.context.imageSmoothingEnabled = false;
+		this.ratioX = this.buffer.canvas.width / this.context.canvas.width
+		this.ratioY = this.buffer.canvas.height / this.context.canvas.height
     };
 
 };

@@ -121,6 +121,7 @@ Game.Player = function(x,y) {
     this.update = function() {
 		
 		if(this.velocity_y == 0) {
+
 			console.log("On the ground, increase");
 		} else {
 			console.log("In the air, decrease");
