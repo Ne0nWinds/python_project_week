@@ -14,8 +14,10 @@ window.addEventListener("load", function() {
 	const paint = function(event) {
 		
 		controller.updateClick(event)
-		display.findClickLocation(event)
-		console.log(display.lastGridClick)
+		let locationOnBuffer = display.findClickLocation(event)
+		tileX = Math.floor(locationOnBuffer.x / game.world.tile_size)
+		tileY = Math.floor(locationOnBuffer.y / game.world.tile_size)
+		game.world.map[tileY][tileX] = 1
 
 	}
 

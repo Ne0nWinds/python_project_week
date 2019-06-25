@@ -6,7 +6,6 @@ const Display = function(canvas,width,height) {
     this.buffer.canvas.height = this.context.canvas.height = height;
 	this.ratioX = 1
 	this.ratioY = 1
-	this.lastGridClick = {}
 
     this.fill = function(color) {
 
@@ -25,7 +24,7 @@ const Display = function(canvas,width,height) {
     this.drawMap = function(map,tile_size) {
 
 		for (let y = 0; y < map.length; y++) {
-			for (let x = 0; x < map.length; x++) {
+			for (let x = 0; x < map[0].length; x++) {
 				if (map[y][x] == 1) {
 					this.drawRectangle(x*tile_size,y*tile_size,tile_size,tile_size,"white")
 				}
@@ -36,12 +35,13 @@ const Display = function(canvas,width,height) {
 
 	this.findClickLocation = (event) => {
 		if (event.type == "mousedown") {
-			this.lastGridClick = {
-				"x":(event.offsetX * this.ratioX),
-				"y":(event.offsetY * this.ratioY),
-			}
-		}
 
+			return {
+				'x':event.offsetX * this.ratioX,
+				'y':event.offsetY * this.ratioY,
+			}
+
+		}
 	}
 
     this.render = function() {
