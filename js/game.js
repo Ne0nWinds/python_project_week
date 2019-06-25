@@ -46,60 +46,38 @@ Game.World = function(friction=0.85,gravity=1) {
 
     this.collideObject = function(object) {
 
-		current_x = Math.floor(object.getLeft() / this.tile_size)
-		current_y = Math.floor(object.getBottom() / this.tile_size)
-		new_x = Math.floor((object.getLeft() + object.velocity_x) / this.tile_size)
-		new_y = Math.floor((object.getBottom() + object.velocity_y ) / this.tile_size)
-	
-		if (this.map[new_y][current_x] == 1) {
-			object.velocity_y = 0;
-		}
+		for (let y = 0; y < 2; y++) {
+			for (let x = 0; x < 2; x++) {
+				current_x = Math.floor((object.x + x * object.width) / this.tile_size)
+				current_y = Math.floor((object.y + y * object.height)  / this.tile_size)
+				new_x = Math.floor(((object.x + x * object.width) + object.velocity_x) / this.tile_size)
+				new_y = Math.floor(((object.y + y * object.height) + object.velocity_y) / this.tile_size)
 
-		if (this.map[current_y][new_x] == 1) {
-			object.velocity_x = 0;
+				if (this.map[new_y][current_x] == 1) {
+
+					
+					if (object.velocity_y > 0) {
+						object.y = new_y * this.tile_size - object.height - 0.1
+						object.jumping = false;
+					} else {
+						object.y = new_y * this.tile_size + object.height + 0.1	
+					}
+
+					object.velocity_y = 0;
+
+				}
+				if (this.map[current_y][new_x] == 1) {
+					if (object.velocity_x > 0) {
+						object.x = new_x * this.tile_size - object.width - 0.1
+					} else {
+						object.x = new_x * this.tile_size + object.width + 0.1
+					}
+					object.velocity_x = 0;
+				}
+					
+			}
 		}
 		
-
-		current_x = Math.floor(object.getRight() / this.tile_size)
-		current_y = Math.floor(object.getBottom() / this.tile_size)
-		new_x = Math.floor((object.getRight() + object.velocity_x) / this.tile_size)
-		new_y = Math.floor((object.getBottom() + object.velocity_y ) / this.tile_size)
-	
-		if (this.map[new_y][current_x] == 1) {
-			object.velocity_y = 0;
-			object.jumping = false;
-		}
-
-		if (this.map[current_y][new_x] == 1) {
-			object.velocity_x = 0;
-		}
-
-		current_x = Math.floor(object.getRight() / this.tile_size)
-		current_y = Math.floor(object.getTop() / this.tile_size)
-		new_x = Math.floor((object.getRight() + object.velocity_x) / this.tile_size)
-		new_y = Math.floor((object.getTop() + object.velocity_y ) / this.tile_size)
-	
-		if (this.map[new_y][current_x] == 1) {
-			object.velocity_y = 0;
-		}
-
-		if (this.map[current_y][new_x] == 1) {
-			object.velocity_x = 0;
-		}
-
-		current_x = Math.floor(object.getLeft() / this.tile_size)
-		current_y = Math.floor(object.getTop() / this.tile_size)
-		new_x = Math.floor((object.getLeft() + object.velocity_x) / this.tile_size)
-		new_y = Math.floor((object.getTop() + object.velocity_y ) / this.tile_size)
-	
-		if (this.map[new_y][current_x] == 1) {
-			object.velocity_y = 0;
-		}
-
-		if (this.map[current_y][new_x] == 1) {
-			object.velocity_x = 0;
-		}
-
     }
 
 }
@@ -125,7 +103,7 @@ Game.Player = function(x,y) {
         if (!this.jumping) {
 
             this.jumping = true;
-            this.velocity_y -= 30;
+            this.velocity_y -= 20;
 
         }
 
