@@ -43,7 +43,7 @@ window.addEventListener("load", function() {
 	const update = function() {
 
 		if (paintController.mouseDown) {
-			tileType = controller.number
+			tileType = paintController.number
 			tileX = Math.floor(locationOnBuffer.x / game.world.tile_size)
 			tileY = Math.floor(locationOnBuffer.y / game.world.tile_size)
 			game.world.map[tileY][tileX] = tileType;
