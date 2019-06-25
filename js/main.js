@@ -11,8 +11,16 @@ window.addEventListener("load", function() {
 		display.render();
 	}
 
+	const paint = function(event) {
+		
+		controller.updateClick(event)
+		display.findClickLocation(event)
+		console.log(display.lastGridClick)
+
+	}
+
 	const update = function() {
-	
+
 		if (controller.right) {
 			game.world.player.moveRight()
 		}
@@ -40,6 +48,7 @@ window.addEventListener("load", function() {
 	window.addEventListener("keydown", controller.updateKeys)
 	window.addEventListener("keyup", controller.updateKeys)
 	window.addEventListener("resize", resize)
-	document.querySelector("#canvas").addEventListener("mousedown", display.findClickLocation)
+	document.querySelector("#canvas").addEventListener("mousedown", paint)
+	document.querySelector("#canvas").addEventListener("mouseup", paint)
 
 })
