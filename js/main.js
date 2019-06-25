@@ -1,3 +1,6 @@
+function randInt(max) {
+	return Math.floor(Math.random() * Math.floor(max));
+}
 window.addEventListener("load", function() {
 
 	const game = new Game();
@@ -25,7 +28,7 @@ window.addEventListener("load", function() {
 
 		if (controller.rightMouseDown) {
 			if (!switched) {
-				tileType = (tileType + 1) % 3
+				tileType = (tileType + 1) % 5
 				console.log(tileType)
 				switched = true;
 			}

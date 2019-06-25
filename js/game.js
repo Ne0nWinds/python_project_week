@@ -121,7 +121,18 @@ Game.World = function(friction_x=0.65, friction_y=0.85, gravity=1) {
 
 				// TELEPORTERS
 				if (this.map[new_y][current_x] == 4) {
-					
+					if (object.velocity_y > 0 && object.last_teleport >= 120) {
+						teleporter = teleport_nodes[randInt(teleport_nodes.length)];
+						object.x = teleporter.x * this.tile_size;
+						object.y = teleporter.y * this.tile_size - object.height;
+						object.velocity_x = 0;
+						object.last_teleport = 0;
+					} else if (object.velocity_y > 0) {
+						object.y = new_y * this.tile_size - object.height - 0.1;
+					} else if (object.velocity_y < 0) {
+						object.y = new_y * this.tile_size + this.tile_size + 0.1;
+					}
+					object.velocity_y = 0;
 				}
 			}
 		}
@@ -143,6 +154,7 @@ Game.Player = function(x,y) {
     this.height = 12;
     this.x = 16;
     this.y = 40;
+	this.last_teleport = 120;
 
     this.jump = function() {
 
@@ -154,10 +166,6 @@ Game.Player = function(x,y) {
         }
 
     }
-
-	this.teleport = function() {
-
-	}
 
 	this.getBottom = function() { return this.y + this.height }
 	this.getTop = function() { return this.y } 
@@ -179,6 +187,8 @@ Game.Player = function(x,y) {
 		}
         this.x += this.velocity_x;
         this.y += this.velocity_y;
+
+		this.last_teleport += 1;
 		
     }
 
