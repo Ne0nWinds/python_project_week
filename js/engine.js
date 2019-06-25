@@ -9,6 +9,7 @@ const Engine = function(frame_rate, update, render) {
 
     this.run = function() {
 
+        window.requestAnimationFrame(this.handleRun)
         this.time_behind = window.performance.now() - this.last_update
 
         while (this.time_behind >= this.frame_step) {
@@ -22,15 +23,11 @@ const Engine = function(frame_rate, update, render) {
             this.updated = false;
             this.last_update = window.performance.now()
         }
-        window.requestAnimationFrame(this.handleRun)
 
     }
     this.handleRun = () => {
         this.run()
     }
 
-    this.start = function() {
-        window.requestAnimationFrame(this.handleRun)
-    }
 }
 
