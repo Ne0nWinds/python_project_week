@@ -26,8 +26,10 @@ const Display = function(canvas,width,height) {
 		for (let y = 0; y < map.length; y++) {
 			for (let x = 0; x < map[0].length; x++) {
 				switch (map[y][x]) {
-					case 1: this.drawRectangle(x*tile_size,y*tile_size,tile_size,tile_size,"white"); break;
-					case 2: this.drawRectangle(x*tile_size,y*tile_size,tile_size,tile_size/2,"gray"); break;
+					case 1: this.drawRectangle(x*tile_size,y*tile_size,tile_size,tile_size,"white"); break; // Normal
+					case 2: this.drawRectangle(x*tile_size,y*tile_size,tile_size,tile_size/2,"gray"); break; // Skinny
+					case 3: this.drawRectangle(x*tile_size,y*tile_size,tile_size,tile_size,"blue"); break; // Bouncy
+					case 4: this.drawRectangle(x*tile_size,y*tile_size,tile_size,tile_size,"green"); break; // Teleport
 				}
 			}
 		}

@@ -30,19 +30,29 @@ Game.World = function(friction_x=0.65, friction_y=0.85, gravity=1) {
 				[1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1],
 				[1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1],
 				[1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1],
+				[1,0,0,0,0,0,0,0,4,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1],
 				[1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1],
 				[1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1],
+				[1,0,0,0,0,0,0,0,0,0,2,2,0,0,0,0,4,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1],
 				[1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1],
-				[1,0,0,0,0,0,0,0,0,0,2,2,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1],
+				[1,0,1,1,4,0,0,0,0,2,2,2,2,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1],
 				[1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1],
-				[1,0,1,1,0,0,0,0,0,2,2,2,2,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1],
-				[1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1],
-				[1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1],
+				[1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,3,3,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1],
 				[1,0,0,1,1,1,0,0,2,2,2,2,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1],
 				[1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1],
-				[1,0,0,0,1,1,1,1,1,1,1,1,1,1,1,1,0,0,0,0,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1],
+				[1,0,0,0,1,1,1,1,1,1,1,1,1,1,1,3,3,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1],
 				[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
 				[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]];
+
+	teleport_nodes = [
+		{x:4, y:19},
+		{x:8, y:14},
+		{x:16, y:17},
+	];
+	this.find_teleporters = function() {
+		
+	}
+
     this.width = this.tile_size * this.map[0].length;
     this.height = this.tile_size * this.map.length;
 
@@ -74,13 +84,13 @@ Game.World = function(friction_x=0.65, friction_y=0.85, gravity=1) {
 					if (object.velocity_y > 0) { //DOWN
 						object.y = new_y * this.tile_size - object.height - 0.1;
 						object.jumping = false;
-					} else if (object.velocity_y) { //UP
+					} else if (object.velocity_y < 0) { //UP
 						object.y = new_y * this.tile_size + this.tile_size + 0.1;
 					}
 					object.velocity_y = 0;
 				}
 				
-				if (this.map[current_y][new_x] == 1) { // Horizontal Collision
+				if (this.map[current_y][new_x] != 0 && this.map[current_y][new_x] != 2) { // Horizontal Collision
 					if (object.velocity_x > 0) { //RIGHT
 						object.x = new_x * this.tile_size - object.width - 0.1;
 					} else if (object.velocity_x < 0) { //LEFT
@@ -89,12 +99,30 @@ Game.World = function(friction_x=0.65, friction_y=0.85, gravity=1) {
 					object.velocity_x = 0;
 				}
 
+				// SKINNY PLATFORM
 				if (this.map[new_y][current_x] == 2 && y != 0) {
 					if (object.velocity_y > 0) {
 						object.y = new_y * this.tile_size - object.height - 0.1;
 						object.jumping = false;
 						object.velocity_y = 0;
 					}
+				}
+
+				// BOUNCE PLATFORM
+				if (this.map[new_y][current_x] == 3) {
+					if (object.velocity_y > 0) { // TOP
+						object.y = new_y * this.tile_size - object.height - 0.1;
+						object.jumping = true;
+						object.velocity_y -= 35;
+					} else if (object.velocity_y < 0) {
+						object.y = new_y * this.tile_size + this.tile_size + 0.1;
+						object.velocity_y = 0;
+					}
+				}
+
+				// TELEPORTERS
+				if (this.map[new_y][current_x] == 4) {
+					
 				}
 			}
 		}
@@ -112,8 +140,8 @@ Game.Player = function(x,y) {
     this.jumping = true;
     this.velocity_x = 0;
     this.velocity_y = 0;
-    this.width = 14;
-    this.height = 14;
+    this.width = 12;
+    this.height = 12;
     this.x = 16;
     this.y = 40;
 
@@ -127,6 +155,10 @@ Game.Player = function(x,y) {
         }
 
     }
+
+	this.teleport = function() {
+
+	}
 
 	this.getBottom = function() { return this.y + this.height }
 	this.getTop = function() { return this.y } 
@@ -143,7 +175,7 @@ Game.Player = function(x,y) {
 			this.friction_x = 0.65;
 			// On the ground, increase the grip
 		} else {
-			this.friction_x = 0.85;
+			this.friction_x = 0.9;
 			// In the air, decrease the resistance
 		}
         this.x += this.velocity_x;
