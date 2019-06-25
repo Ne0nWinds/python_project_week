@@ -35,10 +35,11 @@ const Display = function(canvas,width,height) {
     }   
 
 	this.findClickLocation = (event) => {
-
-		this.lastGridClick = {
-			"x":(event.offsetX * this.ratioX),
-			"y":(event.offsetY * this.ratioY),
+		if (event.type == "mousedown") {
+			this.lastGridClick = {
+				"x":(event.offsetX * this.ratioX),
+				"y":(event.offsetY * this.ratioY),
+			}
 		}
 
 	}

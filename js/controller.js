@@ -3,6 +3,7 @@ const Controller = function() {
     this.left = false;
     this.right = false;
     this.up = false;
+	this.mousedown = false;
 
     this.updateKeys = (event) => {
         if (event.type == "keydown") {
@@ -19,5 +20,14 @@ const Controller = function() {
             }   
         }   
     };  
+
+	this.updateClick = (event) => {
+		if (event.type == "mousedown") {
+			this.mousedown = true
+		} else {
+			this.mousedown = false;
+		}
+	}
+
 };
 
