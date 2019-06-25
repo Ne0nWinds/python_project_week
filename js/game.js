@@ -76,7 +76,6 @@ Game.World = function(friction_x=0.65, friction_y=0.85, gravity=1) {
 				new_y = Math.floor(((object.y + y * object.height) + object.velocity_y) / this.tile_size)
 
 				if (new_y >= this.map.length - 1) {
-					console.log("you fell");
 					object.y = (new_y - 9) * this.tile_size;
 				}
 
