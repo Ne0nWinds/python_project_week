@@ -5,6 +5,7 @@ const Controller = function() {
     this.up = false;
 	this.mouseDown = false;
 	this.rightMouseDown = false;
+	this.number = 1;
 
     this.updateKeys = (event) => {
         if (event.type == "keydown") {
@@ -12,6 +13,11 @@ const Controller = function() {
                 case "ArrowLeft": this.left = true; break;
                 case "ArrowRight": this.right = true; break;
                 case " ": this.up = true; break;
+				case "0": this.number = 0; break;
+				case "1": this.number = 1; break;
+				case "2": this.number = 2; break;
+				case "3": this.number = 3; break;
+				case "4": this.number = 4; break;
             }   
         } else {
             switch(event.key) {
@@ -37,4 +43,3 @@ const Controller = function() {
 	}
 
 };
-
