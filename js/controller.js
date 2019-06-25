@@ -1,8 +1,5 @@
-const Controller = function() {
+const PaintController = function() {
 
-    this.left = false;
-    this.right = false;
-    this.up = false;
 	this.mouseDown = false;
 	this.rightMouseDown = false;
 	this.number = 1;
@@ -10,22 +7,13 @@ const Controller = function() {
     this.updateKeys = (event) => {
         if (event.type == "keydown") {
             switch(event.key) {
-                case "ArrowLeft": this.left = true; break;
-                case "ArrowRight": this.right = true; break;
-                case " ": this.up = true; break;
 				case "0": this.number = 0; break;
 				case "1": this.number = 1; break;
 				case "2": this.number = 2; break;
 				case "3": this.number = 3; break;
 				case "4": this.number = 4; break;
             }   
-        } else {
-            switch(event.key) {
-                case "ArrowLeft": this.left = false; break;
-                case "ArrowRight": this.right = false; break;
-                case " ": this.up = false; break;
-            }   
-        }   
+        }
     };  
 
 	this.updateClick = (event) => {
@@ -43,3 +31,30 @@ const Controller = function() {
 	}
 
 };
+
+const PlayerController = function(leftBtn,upBtn,rightBtn) {
+	this.left = false;
+	this.right = false;
+	this.up = false;
+	this.leftBtn = leftBtn;
+	this.rightBtn = rightBtn;
+	this.upBtn = upBtn;
+	
+	this.updateKeys = (event) => {
+		
+		if (event.type == "keydown") {
+			switch(event.key) {
+				case leftBtn: this.left = true; break;
+				case rightBtn: this.right = true; break;
+				case upBtn: this.up = true; break;
+			}
+		} else {
+			switch(event.key) {
+				case leftBtn: this.left = false; break;
+				case rightBtn: this.right = false; break;
+				case upBtn: this.up = false; break;
+			}
+		}
+
+	}
+}

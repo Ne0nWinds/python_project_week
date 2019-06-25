@@ -5,19 +5,35 @@ window.addEventListener("load", function() {
 
 	const game = new Game();
 	const display = new Display(document.querySelector("#canvas"),game.world.width,game.world.height);
-	const controller = new Controller();
+	const paintController = new PaintController()
+
+// adding players
+	const player1Ctrl = new PlayerController("a","v","d")
+	const player2Ctrl = new PlayerController("ArrowLeft","m","ArrowRight")
+
+	const updateKeys = function(event) {
+		player1Ctrl.updateKeys(event)
+		player2Ctrl.updateKeys(event)
+	}
+
+	game.world.addPlayer("#FF00FF",player1Ctrl)
+	game.world.addPlayer("#FF0000",player2Ctrl)
+	console.log(game.world.players)
+
 
 	const render = function() {
 		display.fill("rgba(0,0,0,0.99)");
 		display.drawMap(game.world.map,game.world.tile_size)
-		display.drawRectangle(game.world.player.x,game.world.player.y,game.world.player.width,game.world.player.height,game.world.player.color)
+		for (let player of game.world.players) {
+			display.drawRectangle(player.x,player.y,player.width,player.height,player.color)
+		}
 		display.render();
 	}
 
 	let locationOnBuffer;
 	const paint = function(event) {
 		
-		controller.updateClick(event)
+		paintController.updateClick(event)
 		locationOnBuffer = display.findClickLocation(event)
 
 	}
@@ -26,29 +42,30 @@ window.addEventListener("load", function() {
 	let switched = false;
 	const update = function() {
 
-		if (controller.mouseDown) {
+		if (paintController.mouseDown) {
 			tileType = controller.number
 			tileX = Math.floor(locationOnBuffer.x / game.world.tile_size)
 			tileY = Math.floor(locationOnBuffer.y / game.world.tile_size)
 			game.world.map[tileY][tileX] = tileType;
 		}
 
-		if (controller.rightMouseDown) {
+		if (paintController.rightMouseDown) {
 			tileX = Math.floor(locationOnBuffer.x / game.world.tile_size)
             tileY = Math.floor(locationOnBuffer.y / game.world.tile_size)
 			game.world.map[tileY][tileX] = 0;
 		}
 
-		if (controller.right) {
-			game.world.player.moveRight()
+		for (let p of game.world.players) {
+			if (p.controls.right) {
+				p.moveRight()
+			}
+			if (p.controls.left) {
+				p.moveLeft()
+			}
+			if (p.controls.up) {
+				p.jump()
+			}
 		}
-		if (controller.left) {
-			game.world.player.moveLeft()
-		}
-		if (controller.up) {
-			game.world.player.jump()
-		}
-
 		game.update()
 
 	}
@@ -63,8 +80,8 @@ window.addEventListener("load", function() {
 	}
 	resize()
 
-	window.addEventListener("keydown", controller.updateKeys)
-	window.addEventListener("keyup", controller.updateKeys)
+	window.addEventListener("keydown", updateKeys)
+	window.addEventListener("keyup", updateKeys)
 	window.addEventListener("resize", resize)
 	document.querySelector("#canvas").addEventListener("mousedown", paint)
 	document.querySelector("#canvas").addEventListener("mousemove", paint)

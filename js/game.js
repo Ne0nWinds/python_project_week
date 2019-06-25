@@ -13,7 +13,7 @@ Game.World = function(friction_x=0.65, friction_y=0.85, gravity=1) {
     this.friction_y = friction_y;
     this.gravity = gravity;
 
-    this.player = new Game.Player();
+    this.players = [];
 
     this.tile_size = 16;
     this.map = [[1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1],
@@ -49,21 +49,26 @@ Game.World = function(friction_x=0.65, friction_y=0.85, gravity=1) {
 		{x:8, y:14},
 		{x:16, y:17},
 	];
-	this.find_teleporters = function() {
-		
-	}
+
 
     this.width = this.tile_size * this.map[0].length;
     this.height = this.tile_size * this.map.length;
 
+	this.addPlayer = function(color,ctrl) {
+
+		this.players.push(new Game.Player(randInt(100)+ 17,randInt(100) + 100, color, ctrl))
+
+	}
+
     this.update = function() {
-        this.player.velocity_y += this.gravity;
-		this.collideObject(this.player);
-        this.player.update();
+		for (let player of this.players) {
+	        player.velocity_y += this.gravity;
+			this.collideObject(player);
+        	player.update();
 
-        this.player.velocity_y *= this.friction_y;
-        this.player.velocity_x *= this.friction_x;
-
+			player.velocity_y *= this.friction_y;
+			player.velocity_x *= this.friction_x;
+		}
     }
 
     this.collideObject = function(object) {
@@ -144,17 +149,18 @@ Game.World.prototype = {
     constructor: Game.World,
 
 }
-Game.Player = function(x,y) {
+Game.Player = function(x,y,color,ctrl) {
 
-    this.color = "#ff0000"
+    this.color = color;
     this.jumping = true;
     this.velocity_x = 0;
     this.velocity_y = 0;
     this.width = 12;
     this.height = 12;
-    this.x = 16;
-    this.y = 40;
+    this.x = x;
+    this.y = y;
 	this.last_teleport = 120;
+	this.controls = ctrl;
 
     this.jump = function() {
 
