@@ -113,10 +113,11 @@ window.addEventListener("load", function() {
 			game.update()
 		} else if (menu.state == "title") {
 			if (paintController.enter) {
+				enterUp = false;
 				menu.state = "player_select"
 			}
 		} else if (menu.state == "player_select") {
-			if (paintController.number > 1 && paintController.number <= menu.controls.length) {
+			if (paintController.number > 0 && paintController.number <= menu.controls.length) {
 				while (game.world.players.length < paintController.number) {
 					keys = menu.controls[game.world.players.length]
 					playerCtrls = new PlayerController(keys[0],keys[1],keys[2])
@@ -125,8 +126,13 @@ window.addEventListener("load", function() {
 				while (game.world.players.length > paintController.number) {
 					game.world.players.pop()
 				}
-				if (paintController.enter) {
+				if (paintController.enter && enterUp) {
 					game.world.game_state = "paint"
+					paintController.number = 1
+					enterUp = false;
+				}
+				if (!paintController.enter) {
+					enterUp = true;
 				}
 			}
 		} 

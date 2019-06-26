@@ -3,7 +3,7 @@ const PaintController = function() {
 	this.mouseDown = false;
 	this.rightMouseDown = false;
 	this.enter = false;
-	this.number = 1;
+	this.number = 0;
 
     this.updateKeys = (event) => {
         if (event.type == "keydown") {
