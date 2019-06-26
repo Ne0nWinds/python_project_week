@@ -14,12 +14,12 @@ window.addEventListener("load", function() {
 	const updateKeys = function(event) {
 		player1Ctrl.updateKeys(event)
 		player2Ctrl.updateKeys(event)
+		paintController.updateKeys(event)
 	}
 
 	game.world.addPlayer("#FF00FF",player1Ctrl)
 	game.world.addPlayer("#FF0000",player2Ctrl)
 	console.log(game.world.players)
-
 
 	const render = function() {
 		display.fill("rgba(0,0,0,0.99)");
@@ -30,7 +30,7 @@ window.addEventListener("load", function() {
 		display.render();
 	}
 
-	let locationOnBuffer;
+	let locationOnBuffer = {};
 	const paint = function(event) {
 		
 		paintController.updateClick(event)
@@ -46,7 +46,9 @@ window.addEventListener("load", function() {
 			tileType = paintController.number
 			tileX = Math.floor(locationOnBuffer.x / game.world.tile_size)
 			tileY = Math.floor(locationOnBuffer.y / game.world.tile_size)
+			console.log()
 			game.world.map[tileY][tileX] = tileType;
+			game.world.teleport_nodes.push({"x":tileX,"y":tileY})
 		}
 
 		if (paintController.rightMouseDown) {

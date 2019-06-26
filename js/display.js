@@ -47,8 +47,8 @@ const Display = function(canvas,width,height) {
 		}
 	}
 
-    this.render = function() {
-        this.context.drawImage(this.buffer.canvas, 0, 0, this.buffer.canvas.width, this.buffer.canvas.height, 0, 0, this.context.canvas.width, this.context.canvas.height);
+    this.render = function(top=0,right=0,bottom=0,left=0) {
+        this.context.drawImage(this.buffer.canvas, left, top, this.buffer.canvas.width - left- right, this.buffer.canvas.height - top - bottom, 0, 0, this.context.canvas.width, this.context.canvas.height);
     };
 
     this.resize = function(w,h,ratio) {
