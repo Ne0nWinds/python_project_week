@@ -47,6 +47,7 @@ Game.World = function(friction_x=0.65, friction_y=0.85, gravity=1) {
 	this.width = this.tile_size * this.map[0].length;
 	this.height = this.tile_size * this.map.length;
 
+
 	this.teleport_nodes = [
 		//example => {"x" : 14, "y" : 25,},
 		//example => {"x" : 8, "y" : 13,},
@@ -78,16 +79,36 @@ Game.World = function(friction_x=0.65, friction_y=0.85, gravity=1) {
 
 	};
 
+
     this.update = function() {
 		for (let player of this.players) {
 	        player.velocity_y += this.gravity;
 			this.collideObject(player);
         	player.update();
+			this.collidePlayers();
 
 			player.velocity_y *= this.friction_y;
 			player.velocity_x *= this.friction_x;
 		}
     };
+
+	this.collidePlayers = function() {
+		for (let i = 0; i < this.players.length; i++) {
+			for (let j = 0; j < this.players.length; j++) {
+				if (i != j && this.players[i].velocity_y > 0) { // don't check the same player against himself or don't check if he isn't moving down
+					if (this.players[i].y + this.players[i].height > this.players[j].y) { // checking if the bottom of the attacking player is below the victim player
+						if (this.players[i].y + this.players[i].height < this.players[j].y + this.players[j].height / 2) { // checking if bottom of the attacking player is above the top half of the victim player
+							if (this.players[i].x < this.players[j].x + this.players[j].width && this.players[i].x > this.players[j].x || this.players[i].x + this.players[i].width < this.players[j].x + this.players[j].width && this.players[i].x + this.players[i].width > this.players[j].x)  {
+							
+								console.log("player " + (i + 1) + " is attacking player " + (j + 1) )
+
+							}
+						}
+					}
+				}
+			}
+		}
+	}
 
     this.collideObject = function(object) {
 
@@ -99,7 +120,6 @@ Game.World = function(friction_x=0.65, friction_y=0.85, gravity=1) {
 				new_y = Math.floor(((object.y + y * object.height) + object.velocity_y) / this.tile_size)
 				
 				if (new_y >= this.map.length || new_y < 0 || current_y < 0 || current_y >= this.map.length) {
-					console.log("ahh")
 					continue;
 				}
 
@@ -181,6 +201,7 @@ Game.Player = function(x,y,color,ctrl) {
     this.y = y;
 	this.last_teleport = 90;
 	this.controls = ctrl;
+	this.alive = true;
 
     this.jump = function() {
 
