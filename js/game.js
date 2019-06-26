@@ -72,7 +72,8 @@ Game.World = function(friction_x=0.65, friction_y=0.85, gravity=1) {
 				new_x = Math.floor(((object.x + x * object.width) + object.velocity_x) / this.tile_size)
 				new_y = Math.floor(((object.y + y * object.height) + object.velocity_y) / this.tile_size)
 				
-				if (new_y >= this.map.length) {
+				if (new_y >= this.map.length || new_y < 0 || current_y < 0 || current_y >= this.map.length) {
+					console.log("ahh")
 					continue;
 				}
 
