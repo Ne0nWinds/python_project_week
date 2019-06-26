@@ -1,3 +1,7 @@
+function randInt(max) {
+	return Math.floor(Math.random() * Math.floor(max));
+
+}
 const Game = function() {
 
     this.world = new Game.World(),
@@ -40,17 +44,39 @@ Game.World = function(friction_x=0.65, friction_y=0.85, gravity=1) {
 				[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
 				[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]];
 
-	this.teleport_nodes = [];
+	this.width = this.tile_size * this.map[0].length;
+	this.height = this.tile_size * this.map.length;
 
+	this.teleport_nodes = [
+		//example => {"x" : 14, "y" : 25,},
+		//example => {"x" : 8, "y" : 13,},
+	];
 
-    this.width = this.tile_size * this.map[0].length;
-    this.height = this.tile_size * this.map.length;
+	this.next_teleporter = function(current_x, current_y) {
+		potential_nodes = [];
+		for (node of this.teleport_nodes) {
+			if (node.x != current_x || node.y != current_y) {
+				potential_nodes.push(node);
+			}
+		}
+		//console.log(potential_nodes[Math.floor(Math.random() * potential_nodes.length)]);
+		return potential_nodes[Math.floor(Math.random() * potential_nodes.length)];
+	};
+
+	this.clear_teleporter = function(x,y) {
+		for (i in this.teleport_nodes) {
+			if (this.teleport_nodes[i].x == x && this.teleport_nodes[i].y == y) {
+				this.teleport_nodes.splice(i, 1);
+				return;
+			}
+		}
+	}
 
 	this.addPlayer = function(color,ctrl) {
 
 		this.players.push(new Game.Player(randInt(100)+ 17,randInt(100) + 100, color, ctrl))
 
-	}
+	};
 
     this.update = function() {
 		for (let player of this.players) {
@@ -61,7 +87,7 @@ Game.World = function(friction_x=0.65, friction_y=0.85, gravity=1) {
 			player.velocity_y *= this.friction_y;
 			player.velocity_x *= this.friction_x;
 		}
-    }
+    };
 
     this.collideObject = function(object) {
 
@@ -119,14 +145,15 @@ Game.World = function(friction_x=0.65, friction_y=0.85, gravity=1) {
 
 				// TELEPORTERS
 				if (this.map[new_y][current_x] == 4) {
-					if (object.velocity_y > 0 && object.last_teleport >= 120) {
-						teleporter = this.teleport_nodes[randInt(this.teleport_nodes.length)];
-						object.x = teleporter.x * this.tile_size;
-						object.y = teleporter.y * this.tile_size - object.height;
+					if (object.velocity_y > 0 && object.last_teleport >= 90 && this.teleport_nodes.length > 1) {
 						object.velocity_x = 0;
+						console.log(this.next_teleporter(current_x, new_y));
+						object.x = this.next_teleporter(current_x, new_y).x * this.tile_size;
+						object.y = this.next_teleporter(current_x, new_y).y * this.tile_size - object.height;
 						object.last_teleport = 0;
 					} else if (object.velocity_y > 0) {
 						object.y = new_y * this.tile_size - object.height - 0.1;
+						object.jumping = false;
 					} else if (object.velocity_y < 0) {
 						object.y = new_y * this.tile_size + this.tile_size + 0.1;
 					}
@@ -152,7 +179,7 @@ Game.Player = function(x,y,color,ctrl) {
     this.height = 12;
     this.x = x;
     this.y = y;
-	this.last_teleport = 120;
+	this.last_teleport = 90;
 	this.controls = ctrl;
 
     this.jump = function() {

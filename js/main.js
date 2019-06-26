@@ -19,7 +19,6 @@ window.addEventListener("load", function() {
 
 	game.world.addPlayer("#FF00FF",player1Ctrl)
 	game.world.addPlayer("#FF0000",player2Ctrl)
-	console.log(game.world.players)
 
 	const render = function() {
 		display.fill("rgba(0,0,0,0.99)");
@@ -43,17 +42,27 @@ window.addEventListener("load", function() {
 	const update = function() {
 
 		if (paintController.mouseDown) {
-			tileType = paintController.number
-			tileX = Math.floor(locationOnBuffer.x / game.world.tile_size)
-			tileY = Math.floor(locationOnBuffer.y / game.world.tile_size)
-			console.log()
+			tileType = paintController.number;
+			tileX = Math.floor(locationOnBuffer.x / game.world.tile_size);
+			tileY = Math.floor(locationOnBuffer.y / game.world.tile_size);
 			game.world.map[tileY][tileX] = tileType;
-			game.world.teleport_nodes.push({"x":tileX,"y":tileY})
+			if (tileType == 4) { // Adds teleport coordinates to array if they're not already in it
+				let coordinates = {"x":tileX,"y":tileY};
+				let found = false;
+				for (node of game.world.teleport_nodes) {
+					if (node.x == tileX && node.y == tileY) {
+						found = true;
+					}
+				}
+				if (!found) { game.world.teleport_nodes.push(coordinates); }
+			}
+			if (tileType == 0) { game.world.clear_teleporter(tileX, tileY); }
 		}
 
 		if (paintController.rightMouseDown) {
-			tileX = Math.floor(locationOnBuffer.x / game.world.tile_size)
-            tileY = Math.floor(locationOnBuffer.y / game.world.tile_size)
+			tileX = Math.floor(locationOnBuffer.x / game.world.tile_size);
+            tileY = Math.floor(locationOnBuffer.y / game.world.tile_size);
+			if (game.world.map[tileY][tileX] == 4) { game.world.clear_teleporter(tileX, tileY); }
 			game.world.map[tileY][tileX] = 0;
 		}
 
