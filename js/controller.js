@@ -2,6 +2,7 @@ const PaintController = function() {
 
 	this.mouseDown = false;
 	this.rightMouseDown = false;
+	this.enter = false;
 	this.number = 1;
 
     this.updateKeys = (event) => {
@@ -12,8 +13,13 @@ const PaintController = function() {
 				case "2": this.number = 2; break;
 				case "3": this.number = 3; break;
 				case "4": this.number = 4; break;
+				case "Enter": this.enter = true; break;
             }   
-        }
+        } else if (event.type == "keyup") {
+		    switch(event.key) {
+				case "Enter": this.enter = false; break;
+			}
+		}
     };  
 
 	this.updateClick = (event) => {
@@ -29,6 +35,7 @@ const PaintController = function() {
 			}
 		}
 	}
+
 
 };
 

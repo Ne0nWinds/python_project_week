@@ -36,6 +36,13 @@ const Display = function(canvas,width,height) {
     
     }   
 
+	this.drawText = function(text,x,y,font_size,color) {
+        this.buffer.fillStyle = color;
+		this.buffer.font = font_size + 'px sans-serif';
+		this.buffer.textAlign = 'center';
+		this.buffer.fillText(text, x, y);
+	}
+
 	this.findClickLocation = (event) => {
 		if (event.type == "mousedown" || event.type == "mousemove") {
 
@@ -46,6 +53,7 @@ const Display = function(canvas,width,height) {
 
 		}
 	}
+
 
     this.render = function(top=0,right=0,bottom=0,left=0) {
         this.context.drawImage(this.buffer.canvas, left, top, this.buffer.canvas.width - left- right, this.buffer.canvas.height - top - bottom, 0, 0, this.context.canvas.width, this.context.canvas.height);

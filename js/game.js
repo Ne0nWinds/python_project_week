@@ -18,6 +18,7 @@ Game.World = function(friction_x=0.65, friction_y=0.85, gravity=1) {
     this.gravity = gravity;
 
     this.players = [];
+	this.game_state = "menu"
 
     this.tile_size = 16;
     this.map = [[1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1],
@@ -40,9 +41,9 @@ Game.World = function(friction_x=0.65, friction_y=0.85, gravity=1) {
 				[1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,3,3,0,0,0,0,0,0,0,0,0,0,0,0,1],
 				[1,0,0,1,1,1,0,0,2,2,2,2,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1],
 				[1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1],
-				[1,0,0,0,1,1,1,1,1,1,1,1,1,1,1,3,3,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1],
-				[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
-				[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]];
+				[1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
+				[1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1],
+				[1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,3,3,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1]];
 
 	this.width = this.tile_size * this.map[0].length;
 	this.height = this.tile_size * this.map.length;
@@ -95,7 +96,7 @@ Game.World = function(friction_x=0.65, friction_y=0.85, gravity=1) {
 	this.collidePlayers = function() {
 		for (let i = 0; i < this.players.length; i++) {
 			for (let j = 0; j < this.players.length; j++) {
-				if (i != j && this.players[i].velocity_y > 0) { // don't check the same player against himself or don't check if he isn't moving down
+				if (i != j) { // don't check the same player against himself or don't check if he isn't moving down
 					if (this.players[i].y + this.players[i].height > this.players[j].y) { // checking if the bottom of the attacking player is below the victim player
 						if (this.players[i].y + this.players[i].height < this.players[j].y + this.players[j].height / 2) { // checking if bottom of the attacking player is above the top half of the victim player
 							if (this.players[i].x < this.players[j].x + this.players[j].width && this.players[i].x > this.players[j].x || this.players[i].x + this.players[i].width < this.players[j].x + this.players[j].width && this.players[i].x + this.players[i].width > this.players[j].x)  {
@@ -201,7 +202,6 @@ Game.Player = function(x,y,color,ctrl) {
     this.y = y;
 	this.last_teleport = 90;
 	this.controls = ctrl;
-	this.alive = true;
 
     this.jump = function() {
 
