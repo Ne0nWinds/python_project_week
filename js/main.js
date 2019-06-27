@@ -2,7 +2,7 @@ function randInt(max) {
 	return Math.floor(Math.random() * Math.floor(max));
 }
 function genColor() {
-	let color = "#" + Math.floor(Math.random() * 16777216).toString(16);
+	let color = "#" + Math.floor((Math.random() * (16777216 - 363636)) + 363636).toString(16);
 	if (color.length != 7) {color = color.slice(0, 1) + "0" + color.slice(1, 6); }
 	return color;
 }
@@ -41,9 +41,10 @@ window.addEventListener("load", function() {
 			display.fill("black");
 			display.drawText("Use the numpad to set the number of players",game.world.width / 2,game.world.height*1/10,"24","white")
 			display.drawText("Current Number of Players : " + game.world.players.length, game.world.width / 2, game.world.height / 2,"24","white")
-			for (let i = 0; i < game.world.players.length; i++) {
-				display.drawRectangle(i*game.world.width/5 + game.world.width/5 - 5,game.world.height * 3/4,10,10,game.world.players[i].color)
-				display.drawText("player " + (i+1),i*game.world.width/5 + game.world.width/5,game.world.height * 3/4 + 30,"15","white")
+			playerCount = game.world.players.length
+			for (let i = 0; i < playerCount; i++) {
+				display.drawRectangle(i*game.world.width/(playerCount+1) + game.world.width/(playerCount+1) - 10,game.world.height * 3/4,16,16,game.world.players[i].color)
+				display.drawText("player " + (i+1),i*game.world.width/(playerCount+1) + game.world.width/(playerCount + 1),game.world.height * 3/4 + 30,"15","white")
 			}
 		}
 			
@@ -120,7 +121,7 @@ window.addEventListener("load", function() {
 				menu.state = "player_select"
 			}
 		} else if (menu.state == "player_select") {
-			if (paintController.number > 0 && paintController.number <= menu.controls.length) {
+			if (paintController.number >= 0 && paintController.number <= menu.controls.length) {
 				while (game.world.players.length < paintController.number) {
 					keys = menu.controls[game.world.players.length]
 					playerCtrls = new PlayerController(keys[0],keys[1],keys[2])
@@ -158,7 +159,7 @@ window.addEventListener("load", function() {
 
 
 	const resize = function() {
-		display.resize(document.documentElement.clientWidth-128,document.documentElement.clientHeight-128,game.world.height/game.world.width)
+		display.resize(document.documentElement.clientWidth-64,document.documentElement.clientHeight-64,game.world.height/game.world.width)
 		display.render()
 	}
 	resize()

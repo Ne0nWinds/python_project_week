@@ -82,8 +82,10 @@ Game.World = function(friction_x=0.65, friction_y=0.85, gravity=1) {
 	this.generateSpawnPoints = function() {
 		for (let y = 0; y < this.map.length - 1;y++) {
 			for (let x = 0; x < this.map[0].length;x++) {
-				if (this.map[y + 1][x] != 0 && this.map[y + 1][x] != 3) {
-					this.spawn_points.push({"x" : x,"y" : y})
+				if (this.map[y][x] == 0) {
+					if (this.map[y + 1][x] != 0 && this.map[y + 1][x] != 3) {
+						this.spawn_points.push({"x" : x,"y" : y})
+					}
 				}
 			}
 		}
@@ -91,7 +93,7 @@ Game.World = function(friction_x=0.65, friction_y=0.85, gravity=1) {
 
 	this.spawnPlayer = function(player) {
 		let spawnPoint = this.spawn_points[randInt(this.spawn_points.length)]
-		player.x = spawnPoint.x * this.tile_size
+		player.x = spawnPoint.x * this.tile_size + (this.tile_size - player.width) / 2
 		player.y = spawnPoint.y * this.tile_size
 		player.alive = true;
 	}
@@ -118,9 +120,9 @@ Game.World = function(friction_x=0.65, friction_y=0.85, gravity=1) {
 		for (let i = 0; i < this.players.length; i++) {
 			for (let j = 0; j < this.players.length; j++) {
 				if (i != j) { // don't check the same player against himself
-					if (this.players[i].y + this.players[i].height > this.players[j].y) { // checking if the bottom of the attacking player is below the victim player
-						if (this.players[i].y + this.players[i].height < this.players[j].y + this.players[j].height / 2) { // checking if bottom of the attacking player is above the top half of the victim player
-							if (this.players[i].x < this.players[j].x + this.players[j].width && this.players[i].x > this.players[j].x || this.players[i].x + this.players[i].width < this.players[j].x + this.players[j].width && this.players[i].x + this.players[i].width > this.players[j].x)  {
+					if (this.players[i].getBottom() >= this.players[j].getTop()) { // checking if the bottom of the attacking player is below the victim player
+						if (this.players[i].getBottom() <= this.players[j].getTop() + this.players[j].height / 2) { // checking if bottom of the attacking player is above the top half of the victim player
+							if (this.players[i].getLeft() <= this.players[j].getRight() && this.players[i].getLeft() >= this.players[j].getLeft() || this.players[i].getRight() <= this.players[j].getRight() && this.players[i].getRight() >= this.players[j].getLeft())  {
 							
 								this.players[i].velocity_y -= 15;
 								this.players[i].score++;
