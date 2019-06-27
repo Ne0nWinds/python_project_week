@@ -3,6 +3,7 @@ const PaintController = function() {
 	this.mouseDown = false;
 	this.rightMouseDown = false;
 	this.enter = false;
+	this.esc = false;
 	this.number = 0;
 
     this.updateKeys = (event) => {
@@ -14,10 +15,12 @@ const PaintController = function() {
 				case "3": this.number = 3; break;
 				case "4": this.number = 4; break;
 				case "Enter": this.enter = true; break;
+				case "Escape": this.esc = true; break;
             }   
         } else if (event.type == "keyup") {
 		    switch(event.key) {
 				case "Enter": this.enter = false; break;
+				case "Escape": this.esc = false; break;
 			}
 		}
     };  

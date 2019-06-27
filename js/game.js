@@ -21,33 +21,34 @@ Game.World = function(friction_x=0.65, friction_y=0.85, gravity=1) {
 	this.game_state = "menu"
 
     this.tile_size = 16;
-    this.map = [[1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1],
-				[1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1],
-				[1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1],
-				[1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1],
-				[1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1],
-				[1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1],
-				[1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1],
-				[1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1],
-				[1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1],
-				[1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1],
-				[1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1],
-				[1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1],
-				[1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1],
-				[1,0,0,0,0,0,0,0,0,0,2,2,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1],
-				[1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1],
-				[1,0,1,1,0,0,0,0,0,2,2,2,2,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1],
-				[1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1],
-				[1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,3,3,0,0,0,0,0,0,0,0,0,0,0,0,1],
-				[1,0,0,1,1,1,0,0,2,2,2,2,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1],
-				[1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1],
-				[1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
-				[1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1],
-				[1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,3,3,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1]];
+    this.map = [[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
+				[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
+				[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
+				[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
+				[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
+				[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
+				[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
+				[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
+				[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
+				[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
+				[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
+				[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
+				[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
+				[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
+				[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
+				[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
+				[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
+				[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
+				[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
+				[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
+				[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
+				[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
+				[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]];
 
 	this.width = this.tile_size * this.map[0].length;
 	this.height = this.tile_size * this.map.length;
 
+	this.spawn_points = []
 
 	this.teleport_nodes = [
 		//example => {"x" : 14, "y" : 25,},
@@ -76,32 +77,58 @@ Game.World = function(friction_x=0.65, friction_y=0.85, gravity=1) {
 
 	this.addPlayer = function(color,ctrl) {
 
-		this.players.push(new Game.Player(randInt(100)+ 17,randInt(100) + 100, color, ctrl))
+		this.players.push(new Game.Player(color, ctrl))
 
 	};
 
+	this.generateSpawnPoints = function() {
+		for (let y = 0; y < this.map.length - 1;y++) {
+			for (let x = 0; x < this.map[0].length;x++) {
+				if (this.map[y + 1][x] == 1) {
+					this.spawn_points.push({"x" : x,"y" : y})
+				}
+			}
+		}
+	} 
+
+	this.spawnPlayer = function(player) {
+		let spawnPoint = this.spawn_points[randInt(this.spawn_points.length)]
+		player.x = spawnPoint.x * this.tile_size
+		player.y = spawnPoint.y * this.tile_size
+		player.alive = true;
+	}
 
     this.update = function() {
 		for (let player of this.players) {
-	        player.velocity_y += this.gravity;
-			this.collideObject(player);
-        	player.update();
-			this.collidePlayers();
+			if (player.alive) {
+				player.velocity_y += this.gravity;
+				this.collideObject(player);
+				player.update();
+				this.collidePlayers();
 
-			player.velocity_y *= this.friction_y;
-			player.velocity_x *= this.friction_x;
+				player.velocity_y *= this.friction_y;
+				player.velocity_x *= this.friction_x;
+			} else {
+				player.last_death += 1;
+				if (player.last_death > 150) {
+					this.spawnPlayer(player)
+				}
+			}
 		}
+		console.log(this.players[0].last_death)
     };
 
 	this.collidePlayers = function() {
 		for (let i = 0; i < this.players.length; i++) {
 			for (let j = 0; j < this.players.length; j++) {
-				if (i != j) { // don't check the same player against himself or don't check if he isn't moving down
+				if (i != j) { // don't check the same player against himself
 					if (this.players[i].y + this.players[i].height > this.players[j].y) { // checking if the bottom of the attacking player is below the victim player
 						if (this.players[i].y + this.players[i].height < this.players[j].y + this.players[j].height / 2) { // checking if bottom of the attacking player is above the top half of the victim player
 							if (this.players[i].x < this.players[j].x + this.players[j].width && this.players[i].x > this.players[j].x || this.players[i].x + this.players[i].width < this.players[j].x + this.players[j].width && this.players[i].x + this.players[i].width > this.players[j].x)  {
 							
-								console.log("player " + (i + 1) + " is attacking player " + (j + 1) )
+								this.players[i].velocity_y -= 20
+								this.players[j].kill()
+								console.log("Player " + (j+1) + " is dead")
 
 							}
 						}
@@ -190,7 +217,7 @@ Game.World.prototype = {
     constructor: Game.World,
 
 }
-Game.Player = function(x,y,color,ctrl) {
+Game.Player = function(color,ctrl) {
 
     this.color = color;
     this.jumping = true;
@@ -198,9 +225,11 @@ Game.Player = function(x,y,color,ctrl) {
     this.velocity_y = 0;
     this.width = 12;
     this.height = 12;
-    this.x = x;
-    this.y = y;
+    this.x = 1000;
+    this.y = 1000;
 	this.last_teleport = 90;
+	this.last_death = 200;
+	this.alive = false;
 	this.controls = ctrl;
 
     this.jump = function() {
@@ -213,6 +242,13 @@ Game.Player = function(x,y,color,ctrl) {
         }
 
     }
+
+	this.kill = function() {
+		this.alive = false;
+		this.last_death = 0
+		this.x = 1000;
+		this.y = 1000;
+	}
 
 	this.getBottom = function() { return this.y + this.height }
 	this.getTop = function() { return this.y } 

@@ -91,6 +91,7 @@ window.addEventListener("load", function() {
 			}
 
 			if (paintController.enter && enterUp) {
+				game.world.generateSpawnPoints()
 				game.world.game_state = "game"
 			}
 			if (!paintController.enter) {
@@ -165,6 +166,6 @@ window.addEventListener("load", function() {
 	window.addEventListener("resize", resize)
 	document.querySelector("#canvas").addEventListener("mousedown", paint)
 	document.querySelector("#canvas").addEventListener("mousemove", paint)
-	document.querySelector("#canvas").addEventListener("mouseup", paint)
+	window.addEventListener("mouseup", paint)
 
 })
