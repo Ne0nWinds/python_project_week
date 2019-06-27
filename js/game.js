@@ -251,6 +251,7 @@ Game.Player = function(color,ctrl) {
 
             this.jumping = true;
             this.velocity_y -= 17.5; // Jump height
+			this.jump_active = false;
 
         }
 

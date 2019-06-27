@@ -130,29 +130,36 @@ window.addEventListener("load", function() {
 				if (gp[i] != null) {
 					if (gp[i].buttons[0].pressed) {
 						game.world.players[i].jump()
+						game.world.players[i].jump_active = false;
+					} else {
+						game.world.players[i].jump_active = true;
 					}
 					if (gp[i].axes[0] > 0.25) {
-						game.world.players[i].moveRight(gp[i].axes[i]);
+						moveMod = (gp[i].axes[i] - 0.25) / 0.75
+						game.world.players[i].moveRight(moveMod);
 					}
 					if (gp[i].axes[0] < -0.25) {
-						game.world.players[i].moveLeft(gp[i].axes[i] * -1);
+						moveMod = ((gp[i].axes[i] + 0.25) / 0.75) * -1
+						game.world.players[i].moveLeft(moveMod);
 					}
 				}
 			}
 
 			for (let i = 0; i < game.world.players.length;i++) {
-				p = game.world.players[i]
-				if (p.controls.right) {
-					p.moveRight()
-				}
-				if (p.controls.left) {
-					p.moveLeft()
-				}
-				if (p.controls.up) {
-					p.jump()
-					p.jump_active = false;
-				} else {
-					p.jump_active = true;
+				if (!gp[i]) {
+					p = game.world.players[i]
+					if (p.controls.right) {
+						p.moveRight()
+					}
+					if (p.controls.left) {
+						p.moveLeft()
+					}
+					if (p.controls.up) {
+						p.jump()
+						p.jump_active = false;
+					} else {
+						p.jump_active = true;
+					}
 				}
 			}
 			game.update()
