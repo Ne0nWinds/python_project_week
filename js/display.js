@@ -36,10 +36,10 @@ const Display = function(canvas,width,height) {
     
     }   
 
-	this.drawText = function(text,x,y,font_size,color) {
+	this.drawText = function(text,x,y,font_size,color,textAlign="center") {
         this.buffer.fillStyle = color;
 		this.buffer.font = font_size + 'px sans-serif';
-		this.buffer.textAlign = 'center';
+		this.buffer.textAlign = textAlign;
 		this.buffer.fillText(text, x, y);
 	}
 

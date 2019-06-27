@@ -24,6 +24,11 @@ window.addEventListener("load", function() {
 		if (game.world.game_state == "game" ) {
 			display.fill("rgba(0,0,0,0.99)");
 			display.drawMap(game.world.map,game.world.tile_size);
+			playerCount = game.world.players.length
+			for (let i = 0; i < playerCount;i++) {
+				display.drawRectangle(i*120/(playerCount+1) + 15,15,8,8,game.world.players[i].color)
+				display.drawText(game.world.players[i].score,i*120/(playerCount + 1) + 25,23,10,"white","left")
+			}
 			for (let player of game.world.players) {
 				display.drawRectangle(player.x,player.y,player.width,player.height,player.color);
 			}

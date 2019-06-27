@@ -120,16 +120,17 @@ Game.World = function(friction_x=0.65, friction_y=0.85, gravity=1) {
 		for (let i = 0; i < this.players.length; i++) {
 			for (let j = 0; j < this.players.length; j++) {
 				if (i != j) { // don't check the same player against himself
-					if (this.players[i].getBottom() >= this.players[j].getTop()) { // checking if the bottom of the attacking player is below the victim player
-						if (this.players[i].getBottom() <= this.players[j].getTop() + this.players[j].height / 2) { // checking if bottom of the attacking player is above the top half of the victim player
-							if (this.players[i].getLeft() <= this.players[j].getRight() && this.players[i].getLeft() >= this.players[j].getLeft() || this.players[i].getRight() <= this.players[j].getRight() && this.players[i].getRight() >= this.players[j].getLeft())  {
+					if (this.players[i].y + this.players[i].height >= this.players[j].y) {
+						if (this.players[i].y + this.players[i].height <= this.players[j].y + this.players[j].height / 2) { // checking if bottom of the attacking player is above the top half of the victim player
+							if (this.players[i].x <= this.players[j].x + this.players[j].width && this.players[i].x > this.players[j].x || this.players[i].x + this.players[i].width <= this.players[j].x + this.players[j].width && this.players[i].x + this.players[i].width >= this.players[j].x)  {
 							
-								this.players[i].velocity_y -= 15;
-								this.players[i].score++;
-								this.players[j].kill();
-								console.log("Player " + (i+1) + " Score:  " + this.players[i].score)
-								this.players[j].x = 1000;
-								this.players[j].y = 1000;
+								if (this.players[i].alive) {
+									this.players[i].velocity_y -= 15;
+									this.players[i].score++;
+									this.players[j].kill();
+									this.players[j].x = 1000;
+									this.players[j].y = 1000;
+								}
 
 							}
 						}
