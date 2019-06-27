@@ -16,7 +16,9 @@ Game.World = function(friction_x=0.65, friction_y=0.85, gravity=1) {
     this.gravity = gravity;
 
     this.players = [];
-	this.game_state = "menu"
+	this.game_state = "menu";
+	this.win_score = 10;
+	this.winner = false;
 
     this.tile_size = 16;
     this.map = [[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],

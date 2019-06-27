@@ -21,7 +21,7 @@ window.addEventListener("load", function() {
 	}
 
 	const render = function() {
-		if (game.world.game_state == "game" ) {
+		if (game.world.game_state == "game") {
 			display.fill("rgba(0,0,0,0.99)");
 			display.drawMap(game.world.map,game.world.tile_size);
 			playerCount = game.world.players.length
@@ -31,6 +31,9 @@ window.addEventListener("load", function() {
 			}
 			for (let player of game.world.players) {
 				display.drawRectangle(player.x,player.y,player.width,player.height,player.color);
+			}
+			if (game.world.winner != false) {
+				display.drawText("Player " + game.world.winner + " Wins",game.world.width / 2,game.world.height*1/5,"18","white")
 			}
 		} else if (game.world.game_state == "paint") {
 			display.fill("rgba(0,0,0,0.99)");
@@ -106,6 +109,20 @@ window.addEventListener("load", function() {
 			}
 
 		} else if (game.world.game_state == "game") {
+
+			for (let i = 0; i < game.world.players.length; i++) {
+				if (game.world.players[i].score >= game.world.win_score) {
+					game.world.winner = i + 1;
+					break;
+				}
+			}
+			if (game.world.winner != false && ( paintController.enter || paintController.esc )) {
+				game.world.game_state = "menu";
+				paintController.number = game.world.players.length;
+				game.world.players = [];
+				game.world.winner = false;
+				enterUp = false;
+			}
 
 			for (let p of game.world.players) {
 				if (p.controls.right) {
