@@ -92,7 +92,9 @@ window.addEventListener("load", function() {
 
 			if (paintController.enter && enterUp) {
 				game.world.generateSpawnPoints()
-				game.world.game_state = "game"
+				if (game.world.spawn_points.length > 0) {
+					game.world.game_state = "game"
+				}
 			}
 			if (!paintController.enter) {
 				enterUp = true;
