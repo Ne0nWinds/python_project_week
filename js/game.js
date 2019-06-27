@@ -112,7 +112,6 @@ Game.World = function(friction_x=0.65, friction_y=0.85, gravity=1) {
 				}
 			}
 		}
-		console.log(this.players[0].last_death)
     };
 
 	this.collidePlayers = function() {
@@ -123,9 +122,10 @@ Game.World = function(friction_x=0.65, friction_y=0.85, gravity=1) {
 						if (this.players[i].y + this.players[i].height < this.players[j].y + this.players[j].height / 2) { // checking if bottom of the attacking player is above the top half of the victim player
 							if (this.players[i].x < this.players[j].x + this.players[j].width && this.players[i].x > this.players[j].x || this.players[i].x + this.players[i].width < this.players[j].x + this.players[j].width && this.players[i].x + this.players[i].width > this.players[j].x)  {
 							
-								this.players[i].velocity_y -= 15
-								this.players[j].kill()
-								console.log("Player " + (j+1) + " is dead")
+								this.players[i].velocity_y -= 15;
+								this.players[i].score++;
+								this.players[j].kill();
+								console.log("Player " + (i+1) + " Score:  " + this.players[i].score)
 								this.players[j].x = 1000;
 								this.players[j].y = 1000;
 
@@ -148,7 +148,8 @@ Game.World = function(friction_x=0.65, friction_y=0.85, gravity=1) {
 
 				if (new_y >= this.map.length || current_y >= this.map.length) {
 					if (object.alive) {
-						object.kill()
+						object.kill();
+						object.score = Math.max(0,object.score - 1);
 					}
 				}
 				
@@ -235,6 +236,7 @@ Game.Player = function(color,ctrl) {
 	this.last_teleport = 90;
 	this.last_death = 200;
 	this.alive = false;
+	this.score = 0;
 	this.controls = ctrl;
 
     this.jump = function() {
