@@ -205,7 +205,7 @@ Game.World = function(friction_x=0.65, friction_y=0.85, gravity=1) {
 					if (object.velocity_y > 0 && object.last_teleport >= 90 && this.teleport_nodes.length > 1) {
 						object.velocity_x = 0;
 						console.log(this.next_teleporter(current_x, new_y));
-						object.x = this.next_teleporter(current_x, new_y).x * this.tile_size;
+						object.x = this.next_teleporter(current_x, new_y).x * this.tile_size + (this.tile_size - object.width)/2;
 						object.y = this.next_teleporter(current_x, new_y).y * this.tile_size - object.height;
 						object.last_teleport = 0;
 					} else if (object.velocity_y > 0) {
@@ -238,13 +238,14 @@ Game.Player = function(color,ctrl) {
     this.y = 1000;
 	this.last_teleport = 90;
 	this.last_death = 200;
+	this.jump_active = true;
 	this.alive = false;
 	this.score = 0;
 	this.controls = ctrl;
 
     this.jump = function() {
 
-        if (!this.jumping && this.velocity_y == 0) {
+        if (this.jump_active && !this.jumping && this.velocity_y == 0) {
 
             this.jumping = true;
             this.velocity_y -= 17.5; // Jump height

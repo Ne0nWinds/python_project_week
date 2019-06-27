@@ -68,3 +68,4 @@ const PlayerController = function(leftBtn,upBtn,rightBtn) {
 
 	}
 }
+

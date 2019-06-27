@@ -85,8 +85,7 @@ window.addEventListener("load", function() {
 						}
 					}
 					if (!found) { game.world.teleport_nodes.push(coordinates); }
-				}
-				if (tileType == 0) { game.world.clear_teleporter(tileX, tileY); }
+				} else { game.world.clear_teleporter(tileX, tileY); }
 			}
 
 			if (paintController.rightMouseDown) {
@@ -117,6 +116,9 @@ window.addEventListener("load", function() {
 				}
 				if (p.controls.up) {
 					p.jump()
+					p.jump_active = false;
+				} else {
+					p.jump_active = true;
 				}
 			}
 			game.update()
