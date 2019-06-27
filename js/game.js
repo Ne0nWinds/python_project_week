@@ -6,9 +6,7 @@ const Game = function() {
 
     this.world = new Game.World(),
 
-    this.update = function() {
-        this.world.update();
-    }
+    this.update = function() { this.world.update(); }
 
 }
 
@@ -84,7 +82,7 @@ Game.World = function(friction_x=0.65, friction_y=0.85, gravity=1) {
 	this.generateSpawnPoints = function() {
 		for (let y = 0; y < this.map.length - 1;y++) {
 			for (let x = 0; x < this.map[0].length;x++) {
-				if (this.map[y + 1][x] == 1) {
+				if (this.map[y + 1][x] != 0 && this.map[y + 1][x] != 3) {
 					this.spawn_points.push({"x" : x,"y" : y})
 				}
 			}
@@ -100,15 +98,14 @@ Game.World = function(friction_x=0.65, friction_y=0.85, gravity=1) {
 
     this.update = function() {
 		for (let player of this.players) {
-			if (player.alive) {
-				player.velocity_y += this.gravity;
-				this.collideObject(player);
-				player.update();
-				this.collidePlayers();
+			player.velocity_y += this.gravity;
+			this.collideObject(player);
+			player.update();
+			this.collidePlayers();
+			player.velocity_y *= this.friction_y;
+			player.velocity_x *= this.friction_x;
 
-				player.velocity_y *= this.friction_y;
-				player.velocity_x *= this.friction_x;
-			} else {
+			if (!player.alive) {
 				player.last_death += 1;
 				if (player.last_death > 150) {
 					this.spawnPlayer(player)
@@ -126,9 +123,11 @@ Game.World = function(friction_x=0.65, friction_y=0.85, gravity=1) {
 						if (this.players[i].y + this.players[i].height < this.players[j].y + this.players[j].height / 2) { // checking if bottom of the attacking player is above the top half of the victim player
 							if (this.players[i].x < this.players[j].x + this.players[j].width && this.players[i].x > this.players[j].x || this.players[i].x + this.players[i].width < this.players[j].x + this.players[j].width && this.players[i].x + this.players[i].width > this.players[j].x)  {
 							
-								this.players[i].velocity_y -= 20
+								this.players[i].velocity_y -= 15
 								this.players[j].kill()
 								console.log("Player " + (j+1) + " is dead")
+								this.players[j].x = 1000;
+								this.players[j].y = 1000;
 
 							}
 						}
@@ -146,6 +145,12 @@ Game.World = function(friction_x=0.65, friction_y=0.85, gravity=1) {
 				current_y = Math.floor((object.y + y * object.height)  / this.tile_size)
 				new_x = Math.floor(((object.x + x * object.width) + object.velocity_x) / this.tile_size)
 				new_y = Math.floor(((object.y + y * object.height) + object.velocity_y) / this.tile_size)
+
+				if (new_y >= this.map.length || current_y >= this.map.length) {
+					if (object.alive) {
+						object.kill()
+					}
+				}
 				
 				if (new_y >= this.map.length || new_y < 0 || current_y < 0 || current_y >= this.map.length) {
 					continue;
@@ -246,8 +251,6 @@ Game.Player = function(color,ctrl) {
 	this.kill = function() {
 		this.alive = false;
 		this.last_death = 0
-		this.x = 1000;
-		this.y = 1000;
 	}
 
 	this.getBottom = function() { return this.y + this.height }
