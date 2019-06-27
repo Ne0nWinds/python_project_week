@@ -267,8 +267,12 @@ Game.Player = function(color,ctrl) {
 	this.getRight = function() { return this.x + this.width } 
 
 	// Horizontal Speed
-    this.moveLeft = function() { this.velocity_x -= 1.1; },
-    this.moveRight = function() { this.velocity_x += 1.1; },
+    this.moveLeft = function(modifier=1) {
+		 this.velocity_x -= (1.1 * modifier); 
+	},
+    this.moveRight = function(modifier=1) { 
+		this.velocity_x += (1.1 * modifier); 
+	},
 
     this.update = function() {
 		

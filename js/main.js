@@ -72,6 +72,7 @@ window.addEventListener("load", function() {
 	let userPainted = false;
 	const update = function() {
 		
+		gp = navigator.getGamepads()
 		if (game.world.game_state == "paint") {
 			if (paintController.mouseDown) {
 				userPainted = true;
@@ -124,7 +125,23 @@ window.addEventListener("load", function() {
 				enterUp = false;
 			}
 
-			for (let p of game.world.players) {
+			// gamepad input
+			for (let i = 0; i < gp.length;i++) {
+				if (gp[i] != null) {
+					if (gp[i].buttons[0].pressed) {
+						game.world.players[i].jump()
+					}
+					if (gp[i].axes[0] > 0.25) {
+						game.world.players[i].moveRight(gp[i].axes[i]);
+					}
+					if (gp[i].axes[0] < -0.25) {
+						game.world.players[i].moveLeft(gp[i].axes[i] * -1);
+					}
+				}
+			}
+
+			for (let i = 0; i < game.world.players.length;i++) {
+				p = game.world.players[i]
 				if (p.controls.right) {
 					p.moveRight()
 				}
@@ -154,7 +171,7 @@ window.addEventListener("load", function() {
 				while (game.world.players.length > paintController.number) {
 					game.world.players.pop()
 				}
-				if (paintController.enter && enterUp) {
+				if (paintController.enter && enterUp && paintController.number >= 1) {
 					game.world.game_state = "paint"
 					paintController.number = 1
 					enterUp = false;
@@ -165,18 +182,6 @@ window.addEventListener("load", function() {
 			}
 		} 
 	}
-/*
-	const player1Ctrl = new PlayerController("a","v","d")
-	const player2Ctrl = new PlayerController("ArrowLeft","m","ArrowRight")
-
-	const updateKeys = function(event) {
-		player1Ctrl.updateKeys(event)
-		player2Ctrl.updateKeys(event)
-		paintController.updateKeys(event)
-	}
-
-	game.world.addPlayer("#FF00FF",player1Ctrl)
-	game.world.addPlayer("#FF0000",player2Ctrl) */
 
 	const engine = new Engine(120,update,render)
 	engine.run()
