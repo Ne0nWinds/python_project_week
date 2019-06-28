@@ -37,13 +37,25 @@ window.addEventListener("load", function() {
 			}
 		} else if (game.world.game_state == "paint") {
 			display.fill("rgb(0,0,0)");
+			display.drawMap(game.world.map,game.world.tile_size);
+			tileX = Math.floor(display.mousePos.x / game.world.tile_size) * game.world.tile_size;
+			tileY = Math.floor(display.mousePos.y / game.world.tile_size) * game.world.tile_size;
+			color = ""
+			height = game.world.tile_size;
+			switch (paintController.number) {
+				case 0: color = "rgba(0,0,0,0)"; break
+				case 1: color = "rgba(255,255,255,0.65)"; break;
+				case 2: color = "rgba(128,128,128,0.65)"; height /= 2; break;
+				case 3: color = "rgba(0,0,255,0.65)"; break;
+				case 4: color = "rgba(0,128,0,0.65)"; break;
+			}
+			display.drawRectangle(tileX,tileY,game.world.tile_size,height,color)
 			if (!userPainted) {
 				display.drawText("Use the mouse and numkeys to make a level",game.world.width / 2,game.world.height*1/5,"18","white")
 			}
-			display.drawMap(game.world.map,game.world.tile_size);
 		} else if (menu.state == "title") {
 			display.fill("black");
-			display.drawText("Title",game.world.width /2,game.world.height*1/3,48,"white");
+			display.drawText("A Title Would Probably Go Here",game.world.width /2,game.world.height*1/3,36,"white");
 			display.drawText("Press Enter to Continue",game.world.width /2,game.world.height*3/4,"14","white");
 		} else if (menu.state == "player_select") {
 			display.fill("black");
@@ -128,10 +140,14 @@ window.addEventListener("load", function() {
 					if (gp[i].axes[0] > 0.25) {
 						moveMod = (gp[i].axes[i] - 0.25) / 0.75
 						game.world.players[i].moveRight(moveMod);
-					}
+					} else if (gp[i].buttons[15].pressed) {
+						game.world.players[i].moveRight();
+					}	
 					if (gp[i].axes[0] < -0.25) {
 						moveMod = ((gp[i].axes[i] + 0.25) / 0.75) * -1
 						game.world.players[i].moveLeft(moveMod);
+					} else if (gp[i].buttons[14].pressed) {
+						game.world.players[i].moveLeft();
 					}
 				}
 			}
@@ -166,11 +182,13 @@ window.addEventListener("load", function() {
 						gplength++;
 					}
 				}
+
+				
+
 				while (game.world.players.length < paintController.number) {
 					keys = menu.controls[game.world.players.length]
 					playerCtrls = new PlayerController(keys[0],keys[1],keys[2])
 					game.world.addPlayer(genColor(),playerCtrls)
-					
 				}
 				while (game.world.players.length > paintController.number) {
 					game.world.players.pop()
@@ -201,7 +219,9 @@ window.addEventListener("load", function() {
 	window.addEventListener("keyup", updateKeys)
 	window.addEventListener("resize", resize)
 	document.querySelector("#canvas").addEventListener("mousedown", paint)
+	document.querySelector("#canvas").addEventListener("mousedown", paint)
 	document.querySelector("#canvas").addEventListener("mousemove", paint)
+	document.querySelector("#canvas").addEventListener("mousemove", display.mouseLocation)
 	window.addEventListener("mouseup", paint)
 	window.addEventListener("gamepaddisconnected", function (e) {
 		if (menu.state == "player_select") {

@@ -4,8 +4,9 @@ const Display = function(canvas,width,height) {
     this.buffer = document.createElement("canvas").getContext("2d");
     this.buffer.canvas.width = this.context.canvas.width = width;
     this.buffer.canvas.height = this.context.canvas.height = height;
-	this.ratioX = 1
-	this.ratioY = 1
+	this.ratioX = 1;
+	this.ratioY = 1;
+	this.mousePos = {"x":0,"y":0};
 
     this.fill = function(color) {
 
@@ -51,6 +52,12 @@ const Display = function(canvas,width,height) {
 				'y':event.offsetY * this.ratioY,
 			}
 
+		}
+	}
+	this.mouseLocation = (event) => {
+		if (event.type == "mousemove") {
+
+			this.mousePos = {"x":event.offsetX * this.ratioX,"y":event.offsetY * this.ratioY}
 		}
 	}
 
