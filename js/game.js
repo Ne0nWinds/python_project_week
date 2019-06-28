@@ -1,7 +1,3 @@
-function randInt(max) {
-	return Math.floor(Math.random() * Math.floor(max));
-
-}
 const Game = function() {
 
     this.world = new Game.World(),
@@ -162,6 +158,7 @@ Game.World = function(friction_x=0.65, friction_y=0.85, gravity=1) {
 					continue;
 				}
 
+
 				if (this.map[new_y][current_x] == 1) { // Vertical Collision
 					if (object.velocity_y > 0) { //DOWN
 						object.y = new_y * this.tile_size - object.height - 0.1;
@@ -171,8 +168,11 @@ Game.World = function(friction_x=0.65, friction_y=0.85, gravity=1) {
 					}
 					object.velocity_y = 0;
 				}
-				
-				if (this.map[current_y][new_x] != 0 && this.map[current_y][new_x] != 2) { // Horizontal Collision
+
+				//hotfix for corner collision bug
+				if (this.map[new_y][current_x] == 1 && this.map[current_y + 1][current_x] == 0 && (this.map[current_y][current_x + 1] || this.map[current_y][current_x - 1])) {
+					console.log("corner detection")
+				} else if (this.map[current_y][new_x] != 0 && this.map[current_y][new_x] != 2) { // Horizontal Collision
 					if (object.velocity_x > 0) { //RIGHT
 						object.x = new_x * this.tile_size - object.width - 0.1;
 					} else if (object.velocity_x < 0) { //LEFT
@@ -195,7 +195,7 @@ Game.World = function(friction_x=0.65, friction_y=0.85, gravity=1) {
 					if (object.velocity_y > 0) { // TOP
 						object.y = new_y * this.tile_size - object.height - 0.1;
 						object.jumping = true;
-						object.velocity_y -= 35;
+						object.velocity_y -= 35; 
 					} else if (object.velocity_y < 0) {
 						object.y = new_y * this.tile_size + this.tile_size + 0.1;
 						object.velocity_y = 0;
@@ -206,7 +206,6 @@ Game.World = function(friction_x=0.65, friction_y=0.85, gravity=1) {
 				if (this.map[new_y][current_x] == 4) {
 					if (object.velocity_y > 0 && object.last_teleport >= 90 && this.teleport_nodes.length > 1) {
 						object.velocity_x = 0;
-						console.log(this.next_teleporter(current_x, new_y));
 						object.x = this.next_teleporter(current_x, new_y).x * this.tile_size + (this.tile_size - object.width)/2;
 						object.y = this.next_teleporter(current_x, new_y).y * this.tile_size - object.height;
 						object.last_teleport = 0;

@@ -36,7 +36,7 @@ window.addEventListener("load", function() {
 				display.drawText("Player " + game.world.winner + " Wins",game.world.width / 2,game.world.height*1/5,"18","white")
 			}
 		} else if (game.world.game_state == "paint") {
-			display.fill("rgba(0,0,0,0.99)");
+			display.fill("rgb(0,0,0)");
 			if (!userPainted) {
 				display.drawText("Use the mouse and numkeys to make a level",game.world.width / 2,game.world.height*1/5,"18","white")
 			}
@@ -73,6 +73,7 @@ window.addEventListener("load", function() {
 	const update = function() {
 		
 		gp = navigator.getGamepads()
+		gplength = 0;
 		if (game.world.game_state == "paint") {
 			if (paintController.mouseDown) {
 				userPainted = true;
@@ -170,10 +171,16 @@ window.addEventListener("load", function() {
 			}
 		} else if (menu.state == "player_select") {
 			if (paintController.number >= 0 && paintController.number <= menu.controls.length) {
+				for (let i = 0; i < gp.length;i++) {
+					if (gp[i] != null) {
+						gplength++;
+					}
+				}
 				while (game.world.players.length < paintController.number) {
 					keys = menu.controls[game.world.players.length]
 					playerCtrls = new PlayerController(keys[0],keys[1],keys[2])
 					game.world.addPlayer(genColor(),playerCtrls)
+					
 				}
 				while (game.world.players.length > paintController.number) {
 					game.world.players.pop()
@@ -206,5 +213,19 @@ window.addEventListener("load", function() {
 	document.querySelector("#canvas").addEventListener("mousedown", paint)
 	document.querySelector("#canvas").addEventListener("mousemove", paint)
 	window.addEventListener("mouseup", paint)
+	window.addEventListener("gamepaddisconnected", function (e) {
+		if (menu.state == "player_select") {
+			if (paintController.number > 0) {
+				paintController.number -= 1;
+			}
+		}
+	})
+	window.addEventListener("gamepadconnected", function (e) {
+		if (menu.state == "player_select") {
+			if (paintController.number < 4) {
+				paintController.number += 1;
+			}
+		}
+	})
 
 })
