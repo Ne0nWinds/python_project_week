@@ -81,16 +81,6 @@ window.addEventListener("load", function() {
 				tileX = Math.floor(locationOnBuffer.x / game.world.tile_size);
 				tileY = Math.floor(locationOnBuffer.y / game.world.tile_size);
 				game.world.map[tileY][tileX] = tileType;
-				if (tileType == 4) { // Adds teleport coordinates to array if they're not already in it
-					let coordinates = {"x":tileX,"y":tileY};
-					let found = false;
-					for (node of game.world.teleport_nodes) {
-						if (node.x == tileX && node.y == tileY) {
-							found = true;
-						}
-					}
-					if (!found) { game.world.teleport_nodes.push(coordinates); }
-				} else { game.world.clear_teleporter(tileX, tileY); }
 			}
 
 			if (paintController.rightMouseDown) {

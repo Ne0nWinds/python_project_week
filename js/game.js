@@ -62,14 +62,14 @@ Game.World = function(friction_x=0.65, friction_y=0.85, gravity=1) {
 		return potential_nodes[Math.floor(Math.random() * potential_nodes.length)];
 	};
 
-	this.clear_teleporter = function(x,y) {
+/*	this.clear_teleporter = function(x,y) {
 		for (i in this.teleport_nodes) {
 			if (this.teleport_nodes[i].x == x && this.teleport_nodes[i].y == y) {
 				this.teleport_nodes.splice(i, 1);
 				return;
 			}
 		}
-	}
+	} */
 
 	this.addPlayer = function(color,ctrl) {
 
@@ -81,6 +81,9 @@ Game.World = function(friction_x=0.65, friction_y=0.85, gravity=1) {
 		for (let y = 0; y < this.map.length - 1;y++) {
 			for (let x = 0; x < this.map[0].length;x++) {
 				if (this.map[y][x] == 0) {
+					if (this.map[y+1][x] == 4) {
+						this.teleport_nodes.push({"x" : x,"y" : y+1})
+					}
 					if (this.map[y + 1][x] != 0 && this.map[y + 1][x] != 3) {
 						this.spawn_points.push({"x" : x,"y" : y})
 					}
@@ -206,8 +209,10 @@ Game.World = function(friction_x=0.65, friction_y=0.85, gravity=1) {
 				if (this.map[new_y][current_x] == 4) {
 					if (object.velocity_y > 0 && object.last_teleport >= 90 && this.teleport_nodes.length > 1) {
 						object.velocity_x = 0;
-						object.x = this.next_teleporter(current_x, new_y).x * this.tile_size + (this.tile_size - object.width)/2;
-						object.y = this.next_teleporter(current_x, new_y).y * this.tile_size - object.height;
+						object.velocity_y = 0;
+						next_teleporter = this.next_teleporter(current_x,new_y)
+						object.x = next_teleporter.x * this.tile_size + (this.tile_size - object.width)/2;
+						object.y = next_teleporter.y * this.tile_size - object.height;
 						object.last_teleport = 0;
 					} else if (object.velocity_y > 0) {
 						object.y = new_y * this.tile_size - object.height - 0.1;
